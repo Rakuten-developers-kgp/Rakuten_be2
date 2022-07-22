@@ -141,7 +141,8 @@ async def query(request:Request):
         id = i.get('_id')
         timestamp = i['_source'].get('@timestamp')
         message = i['_source'].get('message')
-        dict = {'index':index, 'id':id, 'timestamp': timestamp, 'log': message}
+        path = i['_source']['log']['file'].get('path')
+        dict = {'index':index, 'id':id, 'timestamp': timestamp, 'log': message, 'path':path}
         final_res.append(dict)
 
     return final_res
