@@ -92,7 +92,7 @@ async def query(request:Request):
 
     limit = json.loads(request1.get('limit', '0'))
     offset = json.loads(request1.get('offset', '10'))
-
+    print(type(offset))
 
 
 
@@ -126,14 +126,14 @@ async def query(request:Request):
     b = re_filter.get('gte', int((datetime.now() - timedelta(minutes = 100000)).timestamp())*1000)
     if a == '' and b == '':
         a = int((datetime.now().timestamp())*1000)
-        b = int((datetime.now() - timedelta(minutes = 1)).timestamp())*1000
+        b = int((datetime.now() - timedelta(minutes = 10000)).timestamp())*1000
     date_filter = { "range": { "@timestamp": { "format": "epoch_millis", "gte": int(b), "lte": int(a) } } }
     q = Q('bool', must = must_query, must_not = must_not_query , should = should_query, filter = date_filter)
 
     s1.query = q
     s1 = s1[limit:offset]
     res = s1.execute().to_dict()['hits']['hits']
-    print(res)
+    # print(res)
 
     final_res =[]
     for i in res:
